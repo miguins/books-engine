@@ -11,6 +11,7 @@ micronaut:
             - Content-Type
           allowedMethods:
             - GET
+
 # LocalDateTime as timestamp
 jackson:
   serialization:
@@ -30,3 +31,8 @@ cassandra:
       session-keyspace: ${cassandra_session_keyspace:books}
       load-balancing-policy:
         local-datacenter: ${cassandra_local_datacenter:datacenter1}
+
+# Env
+scylla:
+  keyspace: ${SCYLLA_KEYSPACE:books}
+  tableBook: ${TABLE_BOOK:book}
