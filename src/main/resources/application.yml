@@ -1,0 +1,28 @@
+micronaut:
+  application:
+    name: booksEngine
+  server:
+    port: 8082
+    cors:
+      enabled: true
+      configurations:
+        all:
+          allowedHeaders:
+            - Content-Type
+          allowedMethods:
+            - GET
+
+# Health endpoint
+endpoints:
+  health:
+    enabled: true
+
+# Scylla/Cassandra Configuration
+cassandra:
+  default:
+    basic:
+      contact-points:
+        - ${cassandra_contact_points:localhost}
+      session-keyspace: ${cassandra_session_keyspace:books}
+      load-balancing-policy:
+        local-datacenter: ${cassandra_local_datacenter:datacenter1}
