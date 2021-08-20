@@ -11,6 +11,10 @@ micronaut:
             - Content-Type
           allowedMethods:
             - GET
+# LocalDateTime as timestamp
+jackson:
+  serialization:
+    writeDatesAsTimestamps: false
 
 # Health endpoint
 endpoints:
