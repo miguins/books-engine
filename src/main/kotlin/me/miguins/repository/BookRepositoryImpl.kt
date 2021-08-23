@@ -21,7 +21,20 @@ class BookRepositoryImpl(private val cqlSession: CqlSession) : BookRepository {
     val LOG: Logger = LoggerFactory.getLogger(BookRepositoryImpl::class.java)
 
     override fun findById(id: UUID): Book? {
-        TODO("Not yet implemented")
+        val selectResult = cqlSession.execute(
+            (SimpleStatement.newInstance("SELECT * FROM $keyspace.$bookTableName WHERE id = ?", id))
+        )
+
+        return selectResult.map {
+            LOG.info("book with id $id found on the database")
+            Book(
+                it.getUuid("id"),
+                it.getString("createdAt"),
+                it.getString("title"),
+                it.getString("author"),
+                it.getBigDecimal("price"),
+            )
+        }.one()
     }
 
     override fun findAll(): List<Book> {

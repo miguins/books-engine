@@ -13,7 +13,8 @@ class BookServiceImpl(private val bookRepository: BookRepository) : BookService 
     val LOG: Logger = LoggerFactory.getLogger(BookServiceImpl::class.java)
 
     override fun findById(id: UUID): Book? {
-        TODO("Not yet implemented")
+        LOG.info("service.findById", "findById")
+        return bookRepository.findById(id)
     }
 
     override fun listAll(): List<Book> {
