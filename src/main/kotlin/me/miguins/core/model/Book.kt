@@ -1,9 +1,9 @@
-package me.miguins.model
+package me.miguins.core.model
 
 import java.math.BigDecimal
 import java.util.*
 
-data class Book(
+data class Book (
     val id: UUID? = null,
     val createdAt: String? = null,
     val title: String? = null,

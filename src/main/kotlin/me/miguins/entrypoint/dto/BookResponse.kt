@@ -1,6 +1,7 @@
-package me.miguins.controller.dto
+package me.miguins.entrypoint.dto
 
-import me.miguins.model.Book
+import me.miguins.core.model.Book
+import me.miguins.database.entity.BookEntity
 import java.time.LocalDateTime
 
 class BookResponse(book: Book) {

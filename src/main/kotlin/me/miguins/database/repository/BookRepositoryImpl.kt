@@ -1,10 +1,10 @@
-package me.miguins.repository
+package me.miguins.database.repository
 
 import com.datastax.oss.driver.api.core.CqlSession
 import com.datastax.oss.driver.api.core.cql.SimpleStatement
 import io.micronaut.context.annotation.Value
 import jakarta.inject.Singleton
-import me.miguins.model.Book
+import me.miguins.database.entity.BookEntity
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.util.*
@@ -20,14 +20,14 @@ class BookRepositoryImpl(private val cqlSession: CqlSession) : BookRepository {
 
     val LOG: Logger = LoggerFactory.getLogger(BookRepositoryImpl::class.java)
 
-    override fun findById(id: UUID): Book? {
+    override fun findById(id: UUID): BookEntity? {
         val selectResult = cqlSession.execute(
             (SimpleStatement.newInstance("SELECT * FROM $keyspace.$bookTableName WHERE id = ?", id))
         )
 
         return selectResult.map {
             LOG.info("book with id $id found on the database")
-            Book(
+            BookEntity(
                 it.getUuid("id"),
                 it.getString("createdAt"),
                 it.getString("title"),
@@ -37,7 +37,7 @@ class BookRepositoryImpl(private val cqlSession: CqlSession) : BookRepository {
         }.one()
     }
 
-    override fun findAll(): List<Book> {
+    override fun findAll(): List<BookEntity> {
         val selectResult = cqlSession.execute(
             (SimpleStatement.newInstance("SELECT * FROM $keyspace.$bookTableName"))
         )
@@ -45,7 +45,7 @@ class BookRepositoryImpl(private val cqlSession: CqlSession) : BookRepository {
         LOG.info("books accessed on the database")
 
         return selectResult.map {
-            Book(
+            BookEntity(
                 it.getUuid("id"),
                 it.getString("createdAt"),
                 it.getString("title"),

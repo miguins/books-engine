@@ -1,24 +1,24 @@
-package me.miguins.controller
+package me.miguins.entrypoint.controller
 
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.PathVariable
-import me.miguins.controller.dto.BookResponse
-import me.miguins.service.BookService
+import me.miguins.entrypoint.dto.BookResponse
+import me.miguins.core.ports.BookServicePort
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.util.*
 
 @Controller("/api/v1/books")
-class BookController(private val bookService: BookService) {
+class BookController(private val bookServicePort: BookServicePort) {
 
     val LOG: Logger = LoggerFactory.getLogger(BookController::class.java)
 
     @Get
     fun listAll(): HttpResponse<Any> {
 
-        val books = bookService.listAll().map {
+        val books = bookServicePort.listAll().map {
             BookResponse(it)
         }
 
@@ -30,7 +30,7 @@ class BookController(private val bookService: BookService) {
     @Get("{id}")
     fun findById(@PathVariable id: UUID): HttpResponse<Any> {
 
-        val book = bookService.findById(id) ?: return HttpResponse.notFound()
+        val book = bookServicePort.findById(id) ?: return HttpResponse.notFound()
 
         LOG.info("returning founded book", "findById")
 
